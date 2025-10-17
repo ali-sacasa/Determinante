@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculadora de Determinantes - Sebastián Alí Sacasa Céspedes</title>
+
+    <!-- Metadatos académicos -->
+    <meta name="author" content="Sebastián Alí Sacasa Céspedes">
+    <meta name="description" content="Calculadora simbólica y numérica de determinantes de matrices N×N">
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- MathJax para fórmulas -->
+    <script>
+        window.MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <!-- math.js para cálculo simbólico -->
+    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.js"></script>
+
+    <style>
+        body {
+            font-family: 'Cambria', 'Times New Roman', serif;
+            margin: 40px;
+            background-color: #fafafa;
+            color: #222;
+            line-height: 1.6;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #003366;
+        }
+        #matrixContainer {
+            display: grid;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 6px;
+        }
+        input[type="text"] {
+            width: 70px;
+            text-align: center;
+            padding: 6px;
+            border: 1px solid #bbb;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+        button {
+            background-color: #004488;
+            color: white;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover { background-color: #0066cc; }
+        .separator-line {
+            margin: 30px 0;
+            border: none;
+            border-top: 2px solid #ccc;
+        }
+        .code-block {
+            background: #f4f4f4;
+            border-left: 4px solid #004488;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de determinantes de matrices $N\times N$</h1>
+
+    <p style="text-align:center">
+        Ingrese números reales, fraccionarios, complejos (<code>1+2i</code>) o simbólicos (<code>a</code>, <code>x+1</code>).
+    </p>
+
+    <div style="text-align:center">
+        <label for="matrixSize">Tamaño $t(H_{N\times N})=$</label>
+        <input type="number" id="matrixSize" min="2" max="8" value="3">
+        <button onclick="createMatrixInput()">Crear Matriz</button>
+    </div>
+
+    <div id="matrixContainer"></div>
+
+    <div style="text-align:center">
+        <button onclick="calculateDeterminant()">Calcular Determinante</button>
+    </div>
+
+    <hr class="separator-line"> 
+    <h2>Resultados</h2>
+    <p>🔹 Determinante numérico o simbólico: <span id="resultLaplace"></span></p>
+
+    <p>
+        El determinante puede calcularse mediante:
+        <br>
+        $$\det(H) = \sum_{j=1}^{N} (-1)^{i+j} H_{ij} M_{ij}$$
+        o equivalentemente por el enfoque tensorial de Leibniz:
+        <br>
+        $$\det(H) = \varepsilon_{ijk\dots}H_{1i}H_{2j}H_{3k}\dots$$
+    </p>
+
+    <hr class="separator-line">
+    <h2>Explicación Técnica</h2>
+
+    <p>
+        Este programa combina dos modos de cálculo:
+        <ul>
+            <li><b>Numérico:</b> Factorización LU ($\mathcal{O}(N^3)$)</li>
+            <li><b>Simbólico:</b> Expansión algebraica con <code>math.js</code></li>
+        </ul>
+        El parser de entrada admite fracciones, expresiones algebraicas y complejos.  
+        Si detecta una variable (como <code>x</code> o <code>a</code>), usa el modo simbólico.
+    </p>
+
+    <hr class="separator-line">
+    <footer style="text-align:center; font-size:0.9em;">
+        Sebastián Alí Sacasa Céspedes — <a href="mailto:sebastian.sacasa@ucr.ac.cr">sebastian.sacasa@ucr.ac.cr</a>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

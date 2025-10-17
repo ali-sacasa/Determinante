@@ -1,0 +1,63 @@
+body {
+    font-family: 'Times New Roman';
+    background-color: #f4f4f9; 
+    color: #000000; 
+    padding: 50px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+h1 {
+    color: #8a0707; /* Rojo */
+    border-bottom: 5px solid #8a0707;
+    padding-bottom: 20px;
+    margin-bottom: 40px;
+}
+
+h2 {
+    color: #000000;
+    margin-top: 40px;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+/* Estilo para los Inputs */
+input[type="number"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 60px;
+    text-align: center;
+}
+
+/* Estilo para los Inputs de la Matriz */
+#matrixContainer input[type="number"] {
+    width: 45px !important;
+    font-size: 1.1em;
+}
+
+/* Estilo para los Botones */
+button {
+    padding: 10px 20px;
+    background-color: #8a0707;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #8a0707;
+}
+
+/* Resaltar resultados */
+#resultLaplace, #resultTensor {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: #c56900; /* Verde para resultados */
+    font-family: 'Consolas', monospace;
+}

@@ -1,126 +1,59 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Calculadora de Determinantes - Sebastián Alí Sacasa Céspedes</title>
-
-    <!-- Metadatos académicos -->
-    <meta name="author" content="Sebastián Alí Sacasa Céspedes">
-    <meta name="description" content="Calculadora simbólica y numérica de determinantes de matrices N×N">
-    <link rel="stylesheet" href="styles.css">
-
-    <!-- MathJax para fórmulas -->
-    <script>
-        window.MathJax = {
-            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
-            svg: { fontCache: 'global' }
-        };
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
-
-    <!-- math.js para cálculo simbólico -->
-    <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.js"></script>
-
-    <style>
-        body {
-            font-family: 'Cambria', 'Times New Roman', serif;
-            margin: 40px;
-            background-color: #fafafa;
-            color: #222;
-            line-height: 1.6;
-        }
-        h1, h2, h3 {
-            text-align: center;
-            color: #003366;
-        }
-        #matrixContainer {
-            display: grid;
-            justify-content: center;
-            margin-top: 15px;
-            gap: 6px;
-        }
-        input[type="text"] {
-            width: 70px;
-            text-align: center;
-            padding: 6px;
-            border: 1px solid #bbb;
-            border-radius: 4px;
-            font-family: monospace;
-        }
-        button {
-            background-color: #004488;
-            color: white;
-            padding: 8px 14px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            margin: 10px 5px;
-        }
-        button:hover { background-color: #0066cc; }
-        .separator-line {
-            margin: 30px 0;
-            border: none;
-            border-top: 2px solid #ccc;
-        }
-        .code-block {
-            background: #f4f4f4;
-            border-left: 4px solid #004488;
-            padding: 8px;
-            font-family: monospace;
-            font-size: 0.9em;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Determinante — Levi–Civita y Laplace — Sebastián Alí</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Calculadora de determinantes de matrices $N\times N$</h1>
+  <header>
+    <h1>Determinante mediante <em>ε</em> (Levi–Civita) y desarrollo por menores (Laplace)</h1>
+    <p class="meta">Autor: Sebastián Alí — contacto: <a href="mailto:sebastian.sacasa@ucr.ac.cr">sebastian.sacasa@ucr.ac.cr</a></p>
+  </header>
 
-    <p style="text-align:center">
-        Ingrese números reales, fraccionarios, complejos (<code>1+2i</code>) o simbólicos (<code>a</code>, <code>x+1</code>).
-    </p>
+  <main class="container">
+    <section class="card">
+      <label for="size">Tamaño N (ejemplo 4):</label>
+      <input id="size" type="number" min="1" max="6" value="4">
+      <button id="create">Crear matriz</button>
+      <button id="fillExample">Rellenar ejemplo 4×4</button>
+      <button id="compute">Calcular |A| (ε y Laplace)</button>
+      <button id="clear">Limpiar</button>
 
-    <div style="text-align:center">
-        <label for="matrixSize">Tamaño $t(H_{N\times N})=$</label>
-        <input type="number" id="matrixSize" min="2" max="8" value="3">
-        <button onclick="createMatrixInput()">Crear Matriz</button>
-    </div>
+      <div id="matrixArea" class="matrix-grid" aria-label="entrada de matriz"></div>
+    </section>
 
-    <div id="matrixContainer"></div>
+    <section class="card results">
+      <h2>Resultados</h2>
+      <div><strong>|A| por Levi–Civita (ε):</strong> <span id="detEps">—</span></div>
+      <div><strong>|A| por Laplace (menores):</strong> <span id="detLaplace">—</span></div>
 
-    <div style="text-align:center">
-        <button onclick="calculateDeterminant()">Calcular Determinante</button>
-    </div>
+      <h3>Comparación numérica</h3>
+      <div id="comparison">—</div>
 
-    <hr class="separator-line"> 
-    <h2>Resultados</h2>
-    <p>🔹 Determinante numérico o simbólico: <span id="resultLaplace"></span></p>
+      <h3>Detalles / pasos</h3>
+      <div id="steps" class="steps"></div>
+    </section>
 
-    <p>
-        El determinante puede calcularse mediante:
-        <br>
-        $$\det(H) = \sum_{j=1}^{N} (-1)^{i+j} H_{ij} M_{ij}$$
-        o equivalentemente por el enfoque tensorial de Leibniz:
-        <br>
-        $$\det(H) = \varepsilon_{ijk\dots}H_{1i}H_{2j}H_{3k}\dots$$
-    </p>
+    <section class="card docs">
+      <h2>Documentación (paso a paso)</h2>
+      <p>Este documento explica el código de <code>script.js</code>. En resumen:</p>
+      <ol>
+        <li>Representamos números complejos como objetos <code>{re, im}</code> y proporcionamos operaciones aritméticas (suma, resta, producto).</li>
+        <li>Para <strong>ε</strong> (Levi–Civita) generamos todas las permutaciones de columnas y evaluamos la suma sign(permutation) * Π a_{row_i, perm[i]}.</li>
+        <li>Para Laplace realizamos expansión recursiva por la primera fila (o seleccionada), obteniendo menores y cofactors: |A| = Σ_j (-1)^{1+j} a_{1j} |M_{1j}|.
+        <li>Se muestran pasos numéricos para el ejemplo 4×4 (productos complejos desarrollados y suma final).</li>
+      </ol>
+      <p>Si necesitas que el código genere también el desarrollo simbólico paso a paso (LaTeX), pedirlo requerirá añadir procesamiento simbólico — no incluido por petición.</p>
+      <p class="meta small">Contacto: <a href="mailto:sebastian.sacasa@ucr.ac.cr">sebastian.sacasa@ucr.ac.cr</a></p>
+    </section>
+  </main>
 
-    <hr class="separator-line">
-    <h2>Explicación Técnica</h2>
+  <footer>
+    <small>Hecho para publicación tipo artículo. Fuente: Times New Roman. Color de acento: rojo oscuro <code>#8B0000</code>.</small>
+  </footer>
 
-    <p>
-        Este programa combina dos modos de cálculo:
-        <ul>
-            <li><b>Numérico:</b> Factorización LU ($\mathcal{O}(N^3)$)</li>
-            <li><b>Simbólico:</b> Expansión algebraica con <code>math.js</code></li>
-        </ul>
-        El parser de entrada admite fracciones, expresiones algebraicas y complejos.  
-        Si detecta una variable (como <code>x</code> o <code>a</code>), usa el modo simbólico.
-    </p>
-
-    <hr class="separator-line">
-    <footer style="text-align:center; font-size:0.9em;">
-        Sebastián Alí Sacasa Céspedes — <a href="mailto:sebastian.sacasa@ucr.ac.cr">sebastian.sacasa@ucr.ac.cr</a>
-    </footer>
-
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>

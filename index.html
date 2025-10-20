@@ -1,59 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Determinante — Levi–Civita y Laplace — Sebastián Alí</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Determinante Tensorial - APS Style</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Configuración avanzada de MathJax -->
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$']],
+            processEscapes: true
+        },
+        options: {
+            renderActions: { addMenu: [0, '', ''] }
+        }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Determinante mediante <em>ε</em> (Levi–Civita) y desarrollo por menores (Laplace)</h1>
-    <p class="meta">Autor: Sebastián Alí — contacto: <a href="mailto:sebastian.sacasa@ucr.ac.cr">sebastian.sacasa@ucr.ac.cr</a></p>
-  </header>
+    <header>
+        <h1>$$\Large \textbf{Cálculo del Determinante Tensorial: } |A| = \epsilon_{i_1 i_2 \dots i_n} a_{1i_1} a_{2i_2} \dots a_{ni_n}$$</h1>
+    </header>
 
-  <main class="container">
-    <section class="card">
-      <label for="size">Tamaño N (ejemplo 4):</label>
-      <input id="size" type="number" min="1" max="6" value="4">
-      <button id="create">Crear matriz</button>
-      <button id="fillExample">Rellenar ejemplo 4×4</button>
-      <button id="compute">Calcular |A| (ε y Laplace)</button>
-      <button id="clear">Limpiar</button>
+    <section id="main">
+        <label for="matrixSize">Tamaño de la matriz:</label>
+        <input type="number" id="matrixSize" value="4" min="2" max="6">
+        <button onclick="createMatrixInput()">Generar matriz</button>
+        <div id="matrixContainer"></div>
+        <button onclick="calculateDeterminant()">Calcular Determinante</button>
 
-      <div id="matrixArea" class="matrix-grid" aria-label="entrada de matriz"></div>
+        <h2>Resultado:</h2>
+        <div id="result"></div>
+
+        <h3>Desarrollo paso a paso:</h3>
+        <div id="pasos"></div>
     </section>
 
-    <section class="card results">
-      <h2>Resultados</h2>
-      <div><strong>|A| por Levi–Civita (ε):</strong> <span id="detEps">—</span></div>
-      <div><strong>|A| por Laplace (menores):</strong> <span id="detLaplace">—</span></div>
-
-      <h3>Comparación numérica</h3>
-      <div id="comparison">—</div>
-
-      <h3>Detalles / pasos</h3>
-      <div id="steps" class="steps"></div>
+    <section id="doc">
+        <h2>Documentación del método</h2>
+        <p>
+        El determinante tensorial se calcula usando la contracción del símbolo de Levi-Civita:
+        $$|A| = \epsilon_{i_1 i_2 \dots i_n} a_{1 i_1} a_{2 i_2} \dots a_{n i_n}$$
+        donde $\epsilon_{i_1 i_2 \dots i_n}$ es totalmente antisimétrico.
+        </p>
+        <p>
+        Para el desarrollo por menores de Laplace:
+        $$|A| = \sum_{i=1}^{n} (-1)^{1+i} a_{1i} |M_{1i}|$$
+        </p>
+        <p>
+        Cada paso se muestra en LaTeX con MathJax para mantener el estilo formal de la American Physical Society.
+        </p>
     </section>
 
-    <section class="card docs">
-      <h2>Documentación (paso a paso)</h2>
-      <p>Este documento explica el código de <code>script.js</code>. En resumen:</p>
-      <ol>
-        <li>Representamos números complejos como objetos <code>{re, im}</code> y proporcionamos operaciones aritméticas (suma, resta, producto).</li>
-        <li>Para <strong>ε</strong> (Levi–Civita) generamos todas las permutaciones de columnas y evaluamos la suma sign(permutation) * Π a_{row_i, perm[i]}.</li>
-        <li>Para Laplace realizamos expansión recursiva por la primera fila (o seleccionada), obteniendo menores y cofactors: |A| = Σ_j (-1)^{1+j} a_{1j} |M_{1j}|.
-        <li>Se muestran pasos numéricos para el ejemplo 4×4 (productos complejos desarrollados y suma final).</li>
-      </ol>
-      <p>Si necesitas que el código genere también el desarrollo simbólico paso a paso (LaTeX), pedirlo requerirá añadir procesamiento simbólico — no incluido por petición.</p>
-      <p class="meta small">Contacto: <a href="mailto:sebastian.sacasa@ucr.ac.cr">sebastian.sacasa@ucr.ac.cr</a></p>
-    </section>
-  </main>
+    <footer>
+        <p>Autor: Sebastián Alí Sacasa Céspedes — 
+           <a href="mailto:sebastian.sacasa@ucr.ac.cr">sebastian.sacasa@ucr.ac.cr</a></p>
+        <p><em>Universidad de Costa Rica, Departamento de Física Teórica</em></p>
+    </footer>
 
-  <footer>
-    <small>Hecho para publicación tipo artículo. Fuente: Times New Roman. Color de acento: rojo oscuro <code>#8B0000</code>.</small>
-  </footer>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
